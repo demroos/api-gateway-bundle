@@ -1,5 +1,17 @@
 # ApiGatewayBundle
 
+This bundle enables you to easily proxy requests. It stands as a gateway between your API and a number of external services.
+
+## About package
+
+This package will help you create an api gateway.
+
+## Features
+
+* Getting endpoints from bundle configuration
+* Getting endpoints from loaders, see [EndpointLoaderInterface](src/Contracts/EndpointLoaderInterface.php)
+* Feature for processing body request/response is coming soon
+
 ## Install
 `composer require demroos/api-gateway-bundle`
 
@@ -14,12 +26,6 @@ return [
 ];
 
 ```
-
-## Features
-
-* Getting endpoints from bundle configuration
-* Getting endpoints from loaders, see [EndpointLoaderInterface](src/Contracts/EndpointLoaderInterface.php)
-* Feature for processing body request/response is coming soon
 
 ## Config api_gateway.yml
 
