@@ -17,6 +17,7 @@ This package will help you create an api gateway.
 
 ### Enable bundle
 
+in config/bundles.php
 ```php
 <?php
 
@@ -27,9 +28,17 @@ return [
 
 ```
 
-## Config api_gateway.yml
+add to config/routes.yml
+```yaml
+api_gateway:
+  resource: '@ApiGatewayBundle/Resources/config/routes.xml'
+```
+
+## Config
 
 ### Config endpoints
+
+in  api_gateway.yml
 ```yaml
 api_gateway:
   endpoints:
@@ -72,6 +81,7 @@ class ExampleEndpointLoader implements EndpointLoaderInterface
 }
 ```
 
+in config/services.yaml
 ```yaml
 services:
   App\Routing\ExampleEndpointLoader:
