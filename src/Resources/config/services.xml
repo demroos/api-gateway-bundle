@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <!--<parameters>
+
+    </parameters>-->
+
+    <services>
+        <service id="api_gateway.controller" class="Demroos\Bundle\ApiGatewayBundle\Controller\ApiGatewayController" public="true">
+            <argument type="service" id="api_gateway.endpoint_registry"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="api_gateway.route_loader" class="Demroos\Bundle\ApiGatewayBundle\Routing\RouteLoader" public="true">
+            <argument type="service" id="api_gateway.endpoint_registry"/>
+        </service>
+        <service id="api_gateway.endpoint_registry" class="Demroos\Bundle\ApiGatewayBundle\EndpointRegistry">
+            <argument type="tagged_iterator" tag="api_gateway.endpoint_loader"/>
+        </service>
+    </services>
+</container>
