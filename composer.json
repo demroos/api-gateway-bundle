@@ -2,7 +2,7 @@
     "name": "demroos/api-gateway-bundle",
     "type": "symfony-bundle",
     "description": "This bundle will help you make api gateway",
-    "keywords": [],
+    "keywords": ["symfony", "bundle", "api-gateway"],
     "homepage": "https://github.com/demroos/api-gateway-bundle",
     "license": "MIT",
     "authors": [
@@ -19,12 +19,16 @@
         "psr/http-message": "*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.3 || ^5.0",
         "phpunit/phpunit": "9.2.6"
     },
     "autoload": {
         "psr-4": {
             "Demroos\\Bundle\\ApiGatewayBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Demroos\\Bundle\\ApiGatewayBundle\\Tests\\": "tests"
         }
     },
     "minimum-stability": "stable"
