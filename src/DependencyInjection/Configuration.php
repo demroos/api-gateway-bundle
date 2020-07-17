@@ -55,6 +55,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('client_factory')
+                    ->children()
+                        ->scalarNode('service')->end()
+                        ->variableNode('config')->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

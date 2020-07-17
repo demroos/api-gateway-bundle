@@ -11,6 +11,7 @@
     <services>
         <service id="api_gateway.controller" class="Demroos\Bundle\ApiGatewayBundle\Controller\ApiGatewayController" public="true">
             <argument type="service" id="api_gateway.endpoint_registry"/>
+            <argument type="service" id="api_gateway.client"/>
             <tag name="controller.service_arguments"/>
         </service>
         <service id="api_gateway.route_loader" class="Demroos\Bundle\ApiGatewayBundle\Routing\RouteLoader" public="true">
@@ -18,6 +19,11 @@
         </service>
         <service id="api_gateway.endpoint_registry" class="Demroos\Bundle\ApiGatewayBundle\EndpointRegistry">
             <argument type="tagged_iterator" tag="api_gateway.endpoint_loader"/>
+        </service>
+        <service id="api_gateway.client" class="GuzzleHttp\Client">
+            <factory service="api_gateway.client_factory"/>
+        </service>
+        <service id="api_gateway.client_factory" class="Demroos\Bundle\ApiGatewayBundle\Client\ClientFactory">
         </service>
     </services>
 </container>

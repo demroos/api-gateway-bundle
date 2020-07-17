@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ApiGatewayExtension extends Extension
 {
@@ -38,6 +39,20 @@ class ApiGatewayExtension extends Extension
 
             foreach ($config['endpoints'] as $name => $ec) {
                 $registryDef->addMethodCall('create', [$name, $ec['url'], $ec['method'], $ec['config']]);
+            }
+        }
+
+        if (isset($config['client_factory'])) {
+            $factoryNode = $config['client_factory'];
+
+            if (isset($factoryNode['config'])) {
+                $factoryDef = $container->getDefinition('api_gateway.client_factory');
+                $factoryDef->setArgument(0, $factoryNode['config']);
+            }
+
+            if (isset($factoryNode['service'])) {
+                $clientDef = $container->getDefinition('api_gateway.client');
+                $clientDef->setFactory([new Reference($factoryNode['service']), '__invoke']);
             }
         }
     }

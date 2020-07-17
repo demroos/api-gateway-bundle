@@ -87,3 +87,14 @@ services:
   App\Routing\ExampleEndpointLoader:
     tags: [api_gateway.endpoint_loader]
 ```
+
+### Config client factory
+
+in  api_gateway.yml
+```yaml
+api_gateway:
+  client_factory:
+    #service: id_service_for_use_as_client_factory
+    config:
+      http_errors: false
+```

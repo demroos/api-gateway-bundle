@@ -9,7 +9,7 @@
 namespace Demroos\Bundle\ApiGatewayBundle\Controller;
 
 use Demroos\Bundle\ApiGatewayBundle\EndpointRegistry;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,12 +23,19 @@ class ApiGatewayController
     private EndpointRegistry $endpointRegistry;
 
     /**
+     * @var ClientInterface
+     */
+    private ClientInterface $client;
+
+    /**
      * ApiGatewayController constructor.
      * @param EndpointRegistry $endpointRegistry
+     * @param ClientInterface $client
      */
-    public function __construct(EndpointRegistry $endpointRegistry)
+    public function __construct(EndpointRegistry $endpointRegistry, ClientInterface $client)
     {
         $this->endpointRegistry = $endpointRegistry;
+        $this->client = $client;
     }
 
 
@@ -41,7 +48,6 @@ class ApiGatewayController
     {
         $endpoint = $this->endpointRegistry->get($request->get('_route'));
         $route = $endpoint->getConfig();
-        $client = new Client(['http_errors' => false]);
 
         // transform
         $body = $request->getContent();
@@ -50,7 +56,7 @@ class ApiGatewayController
             $body = json_encode($bodyData);
         }
 
-        $response = $client->request($route['method'], $route['url'], ['body' => $body]);
+        $response = $this->client->request($route['method'], $route['url'], ['body' => $body]);
         $headers = $this->getHeaders($response, ['Content-Type', 'Content-Length']);
         return new Response($response->getBody(), $response->getStatusCode(), $headers);
     }
