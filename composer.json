@@ -12,14 +12,14 @@
         }
     ],
     "require": {
-        "php": "^7.4.6",
+        "php": ">=7.4.6",
         "ext-json": "*",
         "symfony/framework-bundle": "^4.3 || ^5.0",
         "guzzlehttp/guzzle": "^6.0",
         "psr/http-message": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "9.2.6"
+        "phpunit/phpunit": "^9.3.8"
     },
     "autoload": {
         "psr-4": {
