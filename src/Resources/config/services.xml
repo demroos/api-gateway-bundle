@@ -16,6 +16,7 @@
         </service>
         <service id="api_gateway.route_loader" class="Demroos\Bundle\ApiGatewayBundle\Routing\RouteLoader" public="true">
             <argument type="service" id="api_gateway.endpoint_registry"/>
+            <tag>routing.route_loader</tag>
         </service>
         <service id="api_gateway.endpoint_registry" class="Demroos\Bundle\ApiGatewayBundle\EndpointRegistry">
             <argument type="tagged_iterator" tag="api_gateway.endpoint_loader"/>
