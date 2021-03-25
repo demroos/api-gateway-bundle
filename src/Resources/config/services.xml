@@ -12,6 +12,7 @@
         <service id="api_gateway.controller" class="Demroos\Bundle\ApiGatewayBundle\Controller\ApiGatewayController" public="true">
             <argument type="service" id="api_gateway.endpoint_registry"/>
             <argument type="service" id="api_gateway.client"/>
+            <argument type="service" id="event_dispatcher"/>
             <tag name="controller.service_arguments"/>
         </service>
         <service id="api_gateway.route_loader" class="Demroos\Bundle\ApiGatewayBundle\Routing\RouteLoader" public="true">
