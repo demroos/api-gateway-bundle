@@ -98,3 +98,10 @@ api_gateway:
     config:
       http_errors: false
 ```
+
+### Support PHP
+
+| ApiGatewayBundle |  PHP  | Symfony      |
+|------------------|-------|--------------|
+| [0.1] (develop)  | >=7.4 |  ^4.3\|^5.0  |
+| [0.0] (0.0)      | ^7.3  |  ^4.3\|^5.0  |
