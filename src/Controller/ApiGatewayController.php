@@ -77,7 +77,7 @@ class ApiGatewayController
         $headers = $this->getHeaders($response, ['Content-Type', 'Content-Length']);
 
         $responseData = json_decode($response->getBody(), true);
-        $event = new EndpointResponseEvent($endpoint, $requestData);
+        $event = new EndpointResponseEvent($endpoint, $responseData);
         $this->dispatcher->dispatch($event, EndpointResponseEvent::NAME);
         $responseData = $event->getResponse();
 
