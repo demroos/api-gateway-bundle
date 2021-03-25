@@ -9,9 +9,13 @@
 namespace Demroos\Bundle\ApiGatewayBundle\Controller;
 
 use Demroos\Bundle\ApiGatewayBundle\EndpointRegistry;
+use Demroos\Bundle\ApiGatewayBundle\Event\EndpointRequestEvent;
+use Demroos\Bundle\ApiGatewayBundle\Event\EndpointResponseEvent;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,14 +32,21 @@ class ApiGatewayController
     private ClientInterface $client;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private EventDispatcherInterface $dispatcher;
+
+    /**
      * ApiGatewayController constructor.
      * @param EndpointRegistry $endpointRegistry
      * @param ClientInterface $client
+     * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(EndpointRegistry $endpointRegistry, ClientInterface $client)
+    public function __construct(EndpointRegistry $endpointRegistry, ClientInterface $client, EventDispatcherInterface $dispatcher)
     {
         $this->endpointRegistry = $endpointRegistry;
         $this->client = $client;
+        $this->dispatcher = $dispatcher;
     }
 
 
@@ -51,14 +62,26 @@ class ApiGatewayController
 
         // transform
         $body = $request->getContent();
+        $requestData = json_decode($body, true);
+
+        $event = new EndpointRequestEvent($endpoint, $requestData);
+        $this->dispatcher->dispatch($event, EndpointRequestEvent::NAME);
+        $requestData = $event->getRequest();
+
         if (isset($route['transform']) && isset($route['transform']['request'])) {
-            $bodyData = $this->processRequest(json_decode($body), $route['transform']['request']);
+            $bodyData = $this->processRequest($requestData, $route['transform']['request']);
             $body = json_encode($bodyData);
         }
 
         $response = $this->client->request($route['method'], $route['url'], ['body' => $body]);
         $headers = $this->getHeaders($response, ['Content-Type', 'Content-Length']);
-        return new Response($response->getBody(), $response->getStatusCode(), $headers);
+
+        $responseData = json_decode($response->getBody(), true);
+        $event = new EndpointResponseEvent($endpoint, $requestData);
+        $this->dispatcher->dispatch($event, EndpointResponseEvent::NAME);
+        $responseData = $event->getResponse();
+
+        return new JsonResponse($responseData, $response->getStatusCode(), $headers);
     }
 
     private function getHeaders(ResponseInterface $response, array $names = []): array
