@@ -41,6 +41,9 @@ api_gateway:
 in  api_gateway.yml
 ```yaml
 api_gateway:
+  config:
+    headers:
+      - 'Content-Type'
   endpoints:
     api_example:
       url: '/api/example'

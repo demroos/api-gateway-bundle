@@ -18,8 +18,32 @@ class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), []);
-        $expectedConfig = ['endpoints' => []];
+        $expectedConfig = [
+            'config' => [
+                'headers' => []
+            ],
+            'endpoints' => []
+        ];
         $this->assertEquals($expectedConfig, $config);
     }
 
+
+    public function testLoadHeaders()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [
+            'api_gateway' => [
+                'config' => [
+                    'headers' => ['Content-Type']
+                ]
+            ]
+        ]);
+        $expectedConfig = [
+            'config' => [
+                'headers' => ['Content-Type']
+            ],
+            'endpoints' => []
+        ];
+        $this->assertEquals($expectedConfig, $config);
+    }
 }

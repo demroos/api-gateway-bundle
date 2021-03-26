@@ -28,6 +28,14 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('config')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('headers')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('endpoints')
                     ->useAttributeAsKey('name')
                     ->normalizeKeys(false)

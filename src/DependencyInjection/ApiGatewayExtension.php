@@ -34,6 +34,8 @@ class ApiGatewayExtension extends Extension
 
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('api_gateway.config', $config['config']);
+
         if (isset($config['endpoints'])) {
             $registryDef = $container->getDefinition('api_gateway.endpoint_registry');
 

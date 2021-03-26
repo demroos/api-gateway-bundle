@@ -36,17 +36,21 @@ class ApiGatewayController
      */
     private EventDispatcherInterface $dispatcher;
 
+    private array $config;
+
     /**
      * ApiGatewayController constructor.
      * @param EndpointRegistry $endpointRegistry
      * @param ClientInterface $client
      * @param EventDispatcherInterface $dispatcher
+     * @param array $config
      */
-    public function __construct(EndpointRegistry $endpointRegistry, ClientInterface $client, EventDispatcherInterface $dispatcher)
+    public function __construct(EndpointRegistry $endpointRegistry, ClientInterface $client, EventDispatcherInterface $dispatcher, array $config)
     {
         $this->endpointRegistry = $endpointRegistry;
         $this->client = $client;
         $this->dispatcher = $dispatcher;
+        $this->config = $config;
     }
 
 
@@ -74,7 +78,7 @@ class ApiGatewayController
         }
 
         $response = $this->client->request($route['method'], $route['url'], ['body' => $body]);
-        $headers = $this->getHeaders($response, ['Content-Type', 'Content-Length']);
+        $headers = $this->getHeaders($response, $this->config['headers']);
 
         $responseData = json_decode($response->getBody(), true);
         $event = new EndpointResponseEvent($endpoint, $responseData);

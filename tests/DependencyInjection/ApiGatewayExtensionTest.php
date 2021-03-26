@@ -91,6 +91,25 @@ class ApiGatewayExtensionTest extends TestCase
         $this->assertEquals('__invoke', $method);
     }
 
+    public function testConfigParamsLoad()
+    {
+        $config = [
+            'api_gateway' => [
+                'config' => [
+                    'headers' => ['Content-Type']
+                ]
+            ]
+        ];
+
+        $container = $this->getContainerForConfigLoad($config);
+
+        $configParam = $container->getParameter('api_gateway.config');
+
+        $this->assertEquals([
+            'headers' => ['Content-Type']
+        ], $configParam);
+    }
+
 
     private function getContainerForConfigLoad($config): ContainerBuilder
     {
