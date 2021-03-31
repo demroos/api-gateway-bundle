@@ -73,9 +73,9 @@ class ApiGatewayController
         $requestData = $event->getRequest();
 
         if (isset($route['transform']) && isset($route['transform']['request'])) {
-            $bodyData = $this->processRequest($requestData, $route['transform']['request']);
-            $body = json_encode($bodyData);
+            $requestData = $this->processRequest($requestData, $route['transform']['request']);
         }
+        $body = json_encode($requestData);
 
         $response = $this->client->request($route['method'], $route['url'], ['body' => $body]);
         $headers = $this->getHeaders($response, $this->config['headers']);
